@@ -19,7 +19,7 @@ const Weather = ({ city }) => {
     const fetchData = async () => {
       const res = await getFavorites();
       setFavorites(res?.data?.favorites || []);
-      console.log(res)
+
     }
     fetchData();
 
