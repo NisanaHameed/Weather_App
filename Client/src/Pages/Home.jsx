@@ -52,7 +52,7 @@ const Home = () => {
         }
         fetchData();
 
-    }, [])
+    }, [showFavorites])
 
     const formatDate = (datetime) => {
         const date = new Date(datetime);
