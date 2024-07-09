@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     config => {
-        const token = JSON.parse(localStorage.getItem('userToken'));
+        const token = localStorage.getItem('userToken');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
@@ -21,7 +21,6 @@ api.interceptors.request.use(
 export const signup = async (data) => {
     try {
         const res = await api.post('/register', data);
-        localStorage.setItem('userToken', res.data.token);
         return res;
     } catch (err) {
         return err;
@@ -31,7 +30,6 @@ export const signup = async (data) => {
 export const login = async (data) => {
     try {
         const res = await api.post('/login', data);
-        localStorage.setItem('userToken', res.data.token);
         return res;
     } catch (err) {
         return err;
@@ -68,6 +66,15 @@ export const historical = async (city) => {
 export const addFavorite = async (city) => {
     try {
         const res = await api.post(`/favorites/${city}`);
+        return res;
+    } catch (err) {
+        return err;
+    }
+}
+
+export const deleteFavorite = async (city) => {
+    try {
+        const res = await api.delete(`/favorites/${city}`);
         return res;
     } catch (err) {
         return err;

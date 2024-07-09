@@ -1,7 +1,10 @@
 import React from 'react'
-import { signup } from '../API/userApi';
+import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setUserCredential } from '../Store/Slice/AuthSlice';
+import { signup } from '../API/userApi';
+import { useDispatch } from 'react-redux';
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -10,6 +13,7 @@ const Signup = () => {
     password: ''
   })
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -29,7 +33,7 @@ const Signup = () => {
       console.log(res)
       if (res?.data?.success) {
         toast.success('Registered successfully!');
-        localStorage.setItem('userToken', res.data.token);
+        dispatch(setUserCredential(res.data.token))
         navigate('/');
       } else {
         toast.error(res.response.data.message)
@@ -58,7 +62,7 @@ const Signup = () => {
         <input
           onChange={(e) => setData({ ...data, name: e.target.value })}
           autoComplete="email"
-          className="block w-full py-1 px-1 
+          className="block w-full py-1 px-1 text-sm
                 text-gray-800 appearance-none 
                 border-b-2 border-gray-100
                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
@@ -73,7 +77,7 @@ const Signup = () => {
         <input
           onChange={(e) => setData({ ...data, email: e.target.value })}
           autoComplete="email"
-          className="block w-full py-1 px-1 
+          className="block w-full py-1 px-1 text-sm 
                 text-gray-800 appearance-none 
                 border-b-2 border-gray-100
                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
@@ -90,7 +94,7 @@ const Signup = () => {
           type="password"
           onChange={(e) => setData({ ...data, password: e.target.value })}
           autoComplete="current-password"
-          className="block w-full py-1 px-1 mb-4
+          className="block w-full py-1 px-1 mb-4 text-sm
                 text-gray-800 appearance-none 
                 border-b-2 border-gray-100
                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
@@ -104,8 +108,8 @@ const Signup = () => {
         >
           Signup
         </button>
-        <div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
-          <a onClick={() => navigate('/login')} className="flex-2 underline">
+        <div className="sm:flex sm:flex-wrap mt-5 sm:mb-4 text-sm text-center">
+          <a onClick={() => navigate('/login')} className="flex-2 text-gray-700 cursor-pointer">
             Already an user?
           </a>
         </div>

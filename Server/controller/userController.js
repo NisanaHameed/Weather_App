@@ -53,7 +53,7 @@ export const login = async (req, res) => {
 export const currentWeather = async (req, res) => {
     try {
         const city = req.query.city;
-        const response = await axios.get(`https://api.weatherbit.io/v2.0/current?city=${city}&key=${process.env.WEATHER_BIT}`);
+        const response = await axios.get(`https://api.weatherbit.io/v2.0/current?city=${city}&key=${process.env.WEATHER_API_KEY}`);
         const weatherData = response.data.data[0];
         res.status(200).json({ success: true, weatherData });
     } catch (err) {
@@ -64,7 +64,7 @@ export const currentWeather = async (req, res) => {
 export const forecast = async (req, res) => {
     try {
         const city = req.query.city;
-        const response = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${process.env.WEATHER_BIT}`);
+        const response = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${process.env.WEATHER_API_KEY}`);
         const weatherData = response.data.data;
         res.status(200).json({ success: true, weatherData });
     } catch (err) {
@@ -73,7 +73,7 @@ export const forecast = async (req, res) => {
 }
 
 export const historical = async (req, res) => {
-console.log('hji')
+    console.log('hji')
     const city = req.query.city;
     const endDate = new Date();
     const startDate = new Date();
@@ -83,10 +83,10 @@ console.log('hji')
     const end = formatDate(endDate);
 
     try {
-        const response = await axios.get(`https://api.weatherbit.io/v2.0/history/subhourly?city=${city}&start_date=${start}&end_date=${end}&key=${process.env.WEATHER_BIT}`);
+        const response = await axios.get(`https://api.weatherbit.io/v2.0/history/daily?city=${city}&start_date=${start}&end_date=${end}&key=${process.env.WEATHER_API_KEY}`);
         console.log(response);
         const weatherData = response.data.data;
-        console.log('weatherDataHistory',weatherData);
+        console.log('weatherDataHistory', weatherData);
         res.status(200).json({ success: true, weatherData });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -94,13 +94,13 @@ console.log('hji')
 }
 
 export const addFavorite = async (req, res) => {
-    const city = req.body.city;
+    const city = req.params.city;
     const userId = req.userId;
     try {
         const favorite = await prisma.favoriteCity.create({
             data: {
                 city,
-                userId
+                userId: parseInt(userId)
             }
         })
         res.status(200).json({ success: true });
@@ -117,6 +117,24 @@ export const getFavorites = async (req, res) => {
         res.status(200).json({ success: true, favorites });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}
+
+export const unlikeCity = async (req, res) => {
+    const { city } = req.params;
+    const userId = req.userId;
+
+    try {
+        const favorite = await prisma.favoriteCity.deleteMany({
+            where: {
+                city,
+                userId: parseInt(userId),
+            },
+        });
+        res.status(200).json({ success: true, message: 'Favorite city removed' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Failed to remove favorite city' });
     }
 }
 
