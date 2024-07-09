@@ -18,7 +18,6 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             const res = await forecast(city);
-            console.log(res)
             const data = []
             const weather = res?.data?.weatherData;
             for (let i = 0; i < 7; i++) {
@@ -32,14 +31,12 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             const res = await historical(city);
-            console.log(res)
             const data = []
             const weather = res?.data?.weatherData;
             for (let i = 0; i < 7; i++) {
                 data.push(weather[i])
             }
             setHistory(data);
-            console.log(data)
         }
         fetchData()
     }, [city])
@@ -48,7 +45,6 @@ const Home = () => {
         const fetchData = async () => {
             const res = await getFavorites();
             setFavorites(res?.data?.favorites || []);
-            console.log(res)
         }
         fetchData();
 
