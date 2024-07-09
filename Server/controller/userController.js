@@ -24,7 +24,7 @@ export const signup = async (req, res) => {
         console.log('user....', user)
         console.log('userid', user.id)
         const token = jwt.sign({ Id: user.id }, process.env.JWT_SECRET, { expiresIn: '3d' });
-        console.log(token)
+        console.log(token);
         res.status(200).json({ success: true, token });
 
     } catch (err) {
@@ -86,7 +86,7 @@ console.log('hji')
         const response = await axios.get(`https://api.weatherbit.io/v2.0/history/subhourly?city=${city}&start_date=${start}&end_date=${end}&key=${process.env.WEATHER_BIT}`);
         console.log(response);
         const weatherData = response.data.data;
-        console.log('weatherDataHistory',weatherData)
+        console.log('weatherDataHistory',weatherData);
         res.status(200).json({ success: true, weatherData });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -106,7 +106,7 @@ export const addFavorite = async (req, res) => {
         res.status(200).json({ success: true });
 
     } catch (err) {
-        res.status(500).json({ success: false, message: 'Internal server error' })
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -116,7 +116,7 @@ export const getFavorites = async (req, res) => {
         const favorites = await prisma.favoriteCity.findMany({ where: { userId } });
         res.status(200).json({ success: true, favorites });
     } catch (err) {
-        res.status(500).json({ success: false, message: 'Internal server error' })
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
