@@ -21,5 +21,5 @@
 
 ## Postman Collection
 
-[Link to Postman Collection](#)
+[https://documenter.getpostman.com/view/32419391/2sA3e2g9ft](#)
 
